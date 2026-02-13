@@ -6,8 +6,10 @@ import pygame as py
 import mediapipe as mp 
 
 
-full_face_mesh = mp.solutions.face_mesh
-face_mesh = full_face_mesh.FaceMesh(refine_landmarks = True)
+# full_face_mesh = mp.solutions.face_mesh
+# face_mesh = full_face_mesh.FaceMesh(refine_landmarks = True)
+#or
+face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks = True)
 
 cap = cv.VideoCapture(0)
 
