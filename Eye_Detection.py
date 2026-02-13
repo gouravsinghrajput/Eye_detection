@@ -24,6 +24,8 @@ while True:
     if not ret:
         break
 
+    frame = cv.flip(frame, 1)
+
     rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
 
     result = face_mesh.process(rgb_frame)
@@ -37,7 +39,7 @@ while True:
             for pixel_position in LEFT_EYE + RIGHT_EYE:
                 x = int(face_landmarks.landmark[pixel_position].x * w)
                 y = int(face_landmarks.landmark[pixel_position].y * h)
-                cv.circle(frame, (x, y), 2, (255, 0, 0), -1)
+                cv.circle(frame, (x, y), 2, (0, 0, 255), -1)
 
     cv.imshow("EYE DETECTION", frame)
     k = cv.waitKey(1)
