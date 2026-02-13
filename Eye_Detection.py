@@ -11,7 +11,7 @@ import mediapipe as mp
 #or
 face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks = True)
 
-cap = cv.VideoCapture(0)
+cap = cv.VideoCapture(0) 
 
 #coordinates of the left and right eye.
 
@@ -27,5 +27,24 @@ while True:
     rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
 
     result = face_mesh.process(rgb_frame)
+    #if result.multi_face_landmarks[0]: for one face that is indexing
+    if result.multi_face_landmarks:
+        for face_landmarks in result.multi_face_landmarks:
+            h, w, _ = frame.shape
 
-#now we tell it to only detect th eyes and not the whole face.        
+#now we tell it to only detect th eyes and not the whole face.
+
+            for pixel_position in LEFT_EYE + RIGHT_EYE:
+                x = int(face_landmarks.landmark[pixel_position].x * w)
+                y = int(face_landmarks.landmark[pixel_position].y * h)
+                cv.circle(frame, (x, y), 2, (255, 0, 0), -1)
+
+    cv.imshow("EYE DETECTION", frame)
+    k = cv.waitKey(1)
+    if k == ord('q'):
+        break
+
+cv.release()
+cv.destroyAllWindows()
+
+#till now it detects the eyes and color it red.            
