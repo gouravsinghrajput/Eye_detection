@@ -30,6 +30,18 @@ blink_counter = 0
 total_blinks = 0
 #---------------------------------------------------------
 
+#num.linalg.norm is used to calculate the distance between the points
+
+#-------------function to calculate the EAR ----------------
+def ear_calculation(points_of_eye):
+    vertical_1 = num.linalg.norm(num.array(points_of_eye[1]) - num.array(points_of_eye[5]))
+    vertical_2 = num.linalg.norm(num.array(points_of_eye[2]) - num.array(points_of_eye[4]))
+    horizontal = num.linalg.norm(num.array(points_of_eye[0]) - num.array(points_of_eye[3]))
+    ear = (vertical_1 + vertical_2) / (2 * horizontal)
+    return ear
+#---------------------------------------------------------
+
+
 
 #coordinates of the left and right eye.
 RIGHT_EYE = [362, 385, 387, 263, 373, 380]
@@ -45,7 +57,7 @@ while True:
     result = face_mesh.process(rgb_frame)
 
 
-#----------hitting the pixels on;y for the eye region and not the whole face.-------------
+#----------hitting the pixels only for the eye region and not the whole face.-------------
     #if result.multi_face_landmarks[0]: for one face that is indexing
     if result.multi_face_landmarks:
         for face_landmarks in result.multi_face_landmarks:
