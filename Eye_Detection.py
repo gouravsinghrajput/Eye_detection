@@ -23,6 +23,13 @@ cap = cv.VideoCapture(0)
 #------------------------
 
 
+#----------initial values for EAR calculations-------------
+ear_threshold = 0.18
+frame_treshold = 3
+blink_counter = 0
+total_blinks = 0
+#---------------------------------------------------------
+
 
 #coordinates of the left and right eye.
 RIGHT_EYE = [362, 385, 387, 263, 373, 380]
