@@ -53,22 +53,34 @@ while True:
     if not ret:
         break
     frame = cv.flip(frame, 1)
+    h, w, _ = frame.shape
     rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
     result = face_mesh.process(rgb_frame)
 
 
-#----------hitting the pixels only for the eye region and not the whole face.-------------
+#--------------------------------------------------------------------------------
     #if result.multi_face_landmarks[0]: for one face that is indexing
     if result.multi_face_landmarks:
-        for face_landmarks in result.multi_face_landmarks:
-            h, w, _ = frame.shape
-#now we tell it to only detect th eyes and not the whole face.
-            for pixel_position in LEFT_EYE + RIGHT_EYE:
-                x = int(face_landmarks.landmark[pixel_position].x * w)
-                y = int(face_landmarks.landmark[pixel_position].y * h)
-                cv.circle(frame, (x, y), 2, (0, 0, 255), -1)
-#---------------------------------------------------------------------------------
+        face_landmarks = result.multi_face_landmarks[1]
 
+        right_eye_points = [] 
+
+ #--------For right eye--------------------------------------------------------   
+        for pixel_position in RIGHT_EYE:
+            x = int(face_landmarks.landmark[pixel_position].x * w)
+            y = int(face_landmarks.landmark[pixel_position].y * h)
+            right_eye_points.append((x,y))
+            cv.circle(frame, (x, y), 2, (0, 0, 255), -1)
+#------------------------------------------------------------------------------
+#---------For left eye --------------------------------------------------------
+        left_eye_points = []
+        for pixel_position in LEFT_EYE:
+            x = int(face_landmarks.landmark[pixel_position].x * w)
+            y = int(face_landmarks.landmark[pixel_position].y * h)
+            left_eye_points.append((x, y))
+            cv.circle(frame, (x, y), 2, (0, 0, 255), -1)
+#-----------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
 
 
     cv.imshow("EYE DETECTION", frame)
