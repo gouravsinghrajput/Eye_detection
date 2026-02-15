@@ -94,13 +94,16 @@ while True:
                 total_blinks +=1
                 print("blinked")
                 blink_counter = 0
+        if (ear_right < ear_threshold and ear_left < ear_threshold) and blink_counter > frame_threshold_for_sleepiness:
+            cv.putText(frame, "UHTJAAA", (10, 150), cv.FONT_ITALIC, 1, (0, 0, 255), 2)
+            print("Uthjaaaa....,  uthjaaaaa  oooooyyeeeeee")
 #---------------------------------------------------------------------------------
 
 
 #---------putting the text on the screen --------------------------------------------
-        cv.putText(frame, f"EAR_RIGHT: {round(ear_right, 2)}", (10, 30), cv.FONT_ITALIC, 0.5, (255, 0, 0), 1.5)
-        cv.putText(frame, f"EAR_LEFT: {round(ear_left, 2)}", (10, 30), cv.FONT_ITALIC, 0.5, (255, 0, 0), 1.5)
-        cv.putText(frame, f"Blinks: {total_blinks}", (10, 30), cv.FONT_ITALIC, 1, (255, 0, 0), 1.5)
+        cv.putText(frame, f"EAR_RIGHT: {round(ear_right, 2)}", (10, 30), cv.FONT_ITALIC, 0.5, (255, 0, 0), 2)
+        cv.putText(frame, f"EAR_LEFT: {round(ear_left, 2)}", (10, 60), cv.FONT_ITALIC, 0.5, (255, 0, 0), 2)
+        cv.putText(frame, f"Blinks: {total_blinks}", (10, 120), cv.FONT_ITALIC, 0.75, (255, 0, 0), 2)
 #------------------------------------------------------------------------------------
 
     cv.imshow("EYE DETECTION", frame)
