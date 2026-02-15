@@ -143,3 +143,6 @@ while True:
 cap.release()
 arpit_video.release()
 cv.destroyAllWindows()           
+
+
+#currently the wake video and the audio would not sync, but we will work on that in the next version!!!!
