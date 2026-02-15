@@ -25,7 +25,7 @@ cap = cv.VideoCapture(0)
 
 #----------initial values for EAR calculations-------------
 ear_threshold = 0.18
-frame_treshold = 3
+frame_threshold = 3
 blink_counter = 0
 total_blinks = 0
 #---------------------------------------------------------
@@ -80,6 +80,19 @@ while True:
             left_eye_points.append((x, y))
             cv.circle(frame, (x, y), 2, (0, 0, 255), -1)
 #-----------------------------------------------------------------------------
+#---------------------------------------------------------------------------------
+        
+#--------------counter for the blinks -------------------------------------------
+        ear_right = ear_calculation(right_eye_points)
+        ear_left = ear_calculation(left_eye_points)
+
+        if ear_right < ear_threshold and ear_left < ear_threshold:
+            blink_counter += 1
+        else:
+            if blink_counter > frame_threshold:
+                total_blinks +=1
+                print("blinked")
+                blink_counter = 0
 #---------------------------------------------------------------------------------
 
 
