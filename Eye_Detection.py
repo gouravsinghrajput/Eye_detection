@@ -22,6 +22,16 @@ face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks = True)
 cap = cv.VideoCapture(0) 
 #------------------------
 
+#---video file ---------
+arpit_video = cv.VideoCapture('arpit_bala_uthja.mp4')
+play_arpit = False
+#-----------------------
+
+#-----audio file -------------
+py.mixer.init()
+py.mixer.music.load('arpit_bala_audio.mp3')
+#-----------------------------
+
 
 #----------initial values for EAR calculations-------------
 ear_threshold = 0.21
@@ -97,7 +107,16 @@ while True:
         if (ear_right < ear_threshold and ear_left < ear_threshold) and blink_counter > frame_threshold_for_sleepiness:
             cv.putText(frame, "UHTJAAA", (10, 150), cv.FONT_ITALIC, 1, (0, 0, 255), 2)
             print("Uthjaaaa....,  uthjaaaaa  oooooyyeeeeee")
+            if not play_arpit:
+                play_arpit = True 
+                py.mixer.music.play()
 #---------------------------------------------------------------------------------
+
+        if ear_right > ear_threshold and ear_left > ear_threshold:
+            if play_arpit:
+                play_arpit = False
+                py.mixer.music.stop()
+                cv.destroyWindow("WAKE UP VIDEO")
 
 
 #---------putting the text on the screen --------------------------------------------
@@ -107,11 +126,20 @@ while True:
 #------------------------------------------------------------------------------------
 
     cv.imshow("EYE DETECTION", frame)
+
+#----------for the secondary window ------------------------
+    if play_arpit:
+        ret_alert, alert_frame = arpit_video.read()
+        if ret_alert:
+            cv.imshow("WAKE UP VIDEO", alert_frame)
+        else:
+            arpit_video.set(cv.CAP_PROP_POS_FRAMES, 0)
+#-----------------------------------------------------------
+
     k = cv.waitKey(1)
     if k == ord('q'):
         break
 
-cv.release()
-cv.destroyAllWindows()
-
-#till now it detects the eyes and color it red.            
+cap.release()
+arpit_video.release()
+cv.destroyAllWindows()           
