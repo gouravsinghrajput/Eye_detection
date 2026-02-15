@@ -24,8 +24,9 @@ cap = cv.VideoCapture(0)
 
 
 #----------initial values for EAR calculations-------------
-ear_threshold = 0.18
-frame_threshold = 3
+ear_threshold = 0.21
+frame_threshold_for_blinking = 2
+frame_threshold_for_sleepiness = 10
 blink_counter = 0
 total_blinks = 0
 #---------------------------------------------------------
@@ -61,11 +62,11 @@ while True:
 #--------------------------------------------------------------------------------
     #if result.multi_face_landmarks[0]: for one face that is indexing
     if result.multi_face_landmarks:
-        face_landmarks = result.multi_face_landmarks[1]
+        face_landmarks = result.multi_face_landmarks[0]
 
-        right_eye_points = [] 
 
  #--------For right eye--------------------------------------------------------   
+        right_eye_points = [] 
         for pixel_position in RIGHT_EYE:
             x = int(face_landmarks.landmark[pixel_position].x * w)
             y = int(face_landmarks.landmark[pixel_position].y * h)
@@ -89,12 +90,18 @@ while True:
         if ear_right < ear_threshold and ear_left < ear_threshold:
             blink_counter += 1
         else:
-            if blink_counter > frame_threshold:
+            if blink_counter > frame_threshold_for_blinking:
                 total_blinks +=1
                 print("blinked")
                 blink_counter = 0
 #---------------------------------------------------------------------------------
 
+
+#---------putting the text on the screen --------------------------------------------
+        cv.putText(frame, f"EAR_RIGHT: {round(ear_right, 2)}", (10, 30), cv.FONT_ITALIC, 0.5, (255, 0, 0), 1.5)
+        cv.putText(frame, f"EAR_LEFT: {round(ear_left, 2)}", (10, 30), cv.FONT_ITALIC, 0.5, (255, 0, 0), 1.5)
+        cv.putText(frame, f"Blinks: {total_blinks}", (10, 30), cv.FONT_ITALIC, 1, (255, 0, 0), 1.5)
+#------------------------------------------------------------------------------------
 
     cv.imshow("EYE DETECTION", frame)
     k = cv.waitKey(1)
